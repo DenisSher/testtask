@@ -1,65 +1,42 @@
-import React from 'react';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import TodoList from "./components/TodoList";
+import styled from "styled-components";
 
-class GuestApp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { items: [], text: '' };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+const Wrapper = styled.div``;
 
-    render() {
-        return (
-            <div>
-                <TodoList items={this.state.items} />
-                <form onSubmit={this.handleSubmit}>
-                    <label htmlFor="new-todo">
-                    </label>
-                    <input
-                        id="new-todo"
-                        onChange={this.handleChange}
-                        value={this.state.text}
-                    />
-                    <button>
-                        Добавить #{this.state.items.length + 1}
-                    </button>
-                </form>
-            </div>
-        );
-    }
+function GuestApp() {
+  const [items, setItems] = useState([]);
+  const [text, setText] = useState("");
+  const [couple, setCouple] = useState(false);
 
-    handleChange(e) {
-        this.setState({ text: e.target.value });
-    }
+  const handleChange = e => {
+    setText(e.target.value);
+  };
 
-    handleSubmit(e) {
-        e.preventDefault();
-        if (!this.state.text.length) {
-            return;
-        }
-        const newItem = {
-            text: this.state.text,
-            id: Date.now()
-        };
-        this.setState(state => ({
-            items: state.items.concat(newItem),
-            text: ''
-        }));
-    }
+  return (
+    <>
+      <span>
+        Amount of guests:
+        {items.reduce((acc, current) => {
+          return current.couple === true ? acc + 2 : acc + 1;
+        }, 0)}
+      </span>
+      <Wrapper>
+        <input id="new-todo" value={text} onChange={e => handleChange(e)} />
+        <p>With a couple</p>
+        <input id="couple" type="checkbox" onClick={() => setCouple(!couple)} />
+        <button
+          onClick={() => {
+            setItems([...items, { name: text, couple }]);
+            setText("");
+          }}
+        >
+          Add guest
+        </button>
+      </Wrapper>
+      <TodoList items={items}/>
+    </>
+  );
 }
-
-class TodoList extends React.Component {
-    render() {
-        return (
-            <ul>
-                {this.props.items.map(item => (
-                    <li key={item.id}>{item.text}</li>
-                ))}
-            </ul>
-        );
-    }
-}
-
 
 export default GuestApp;
