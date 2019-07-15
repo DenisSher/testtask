@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import TodoList from "./components/TodoList";
 import uuidv4 from "uuid/v4";
 import styled from "styled-components";
+import {increment, decrement} from "./action"
+import {connect} from "react-redux"
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,7 +13,7 @@ const WrapperCheckbox = styled.div`
   display: flex;
 `;
 
-function GuestApp() {
+function GuestApp(props) {
   const [items, setItems] = useState([]);
   const [text, setText] = useState("");
   const [couple, setCouple] = useState(false);
@@ -51,6 +53,9 @@ function GuestApp() {
         <input type="checkbox" onClick={() => setCouple(!couple)} />
       </Wrapper>
       <p>Filter</p>
+      <button onClick={() => props.increment()}>+</button>
+      <button onClick={() => props.decrement()}>-</button>
+        <div>{props.counter}</div>
       <WrapperCheckbox>
         <input
           type="checkbox"
@@ -64,6 +69,7 @@ function GuestApp() {
         <input type="checkbox" />
         <span>Single</span>
       </WrapperCheckbox>
+
       <TodoList
         onChange={() =>
           setItems(JSON.parse(localStorage.getItem("storage")) || [])
@@ -73,4 +79,20 @@ function GuestApp() {
   );
 }
 
-export default GuestApp;
+function mapStateToProps(state) {
+    return {
+        counter: state.counter,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    increment: payload => dispatch(increment(payload)),
+    decrement: payload => dispatch(decrement(payload))
+  };
+};
+
+export default connect(
+    mapStateToProps,
+  mapDispatchToProps
+)(GuestApp);
