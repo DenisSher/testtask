@@ -12,26 +12,30 @@ const Guest = styled.li`
   color: black;
 `;
 
-const Item = styled.input` 
+const Item = styled.input`
   outline: none;
   background: white;
   border: none;
 `;
 
 const TodoList = () => {
-  const [guests, setGuests] = useState(JSON.parse(localStorage.getItem("storage")));
+  const [guests, setGuests] = useState(
+    JSON.parse(localStorage.getItem("storage"))
+  );
   useEffect(
-      () => setGuests(JSON.parse(localStorage.getItem("storage")) || []),
-      []
+    () => setGuests(JSON.parse(localStorage.getItem("storage")) || []),
+    []
   );
   return (
     <GuestList>
-      {guests.map((item) => (
+      {guests.map((item, id) => (
         <Guest>
           <Item
             value={item.name}
             disabled={true}
-            onDoubleClick={() => {console.log(1)}}
+            onDoubleClick={() => {
+              console.log(id);
+            }}
           />
           <span>{item.couple === true ? "With couple" : "Single"}</span>
           <button

@@ -26,13 +26,12 @@ function GuestApp() {
   };
 
   const handleKeyPress = e => {
-        if (e.key === "Enter") {
-            text === "" ||
-            setItems([...items, { id: uuidv4(), name: text, couple }]);
-            setText("");
-            localStorage.setItem("storage", JSON.stringify(items));
-        }
-    };
+    if (e.key === "Enter") {
+      text === "" || setItems([...items, { id: uuidv4(), name: text, couple }]);
+      setText("");
+      localStorage.setItem("storage", JSON.stringify(items));
+    }
+  };
 
   return (
     <>
@@ -43,21 +42,33 @@ function GuestApp() {
         }, 0)}
       </span>
       <Wrapper>
-        <input value={text} onChange={e => handleChange(e)}
-           onKeyPress={handleKeyPress}
+        <input
+          value={text}
+          onChange={e => handleChange(e)}
+          onKeyPress={handleKeyPress}
         />
         <p>With a couple</p>
         <input type="checkbox" onClick={() => setCouple(!couple)} />
       </Wrapper>
-        <p>Filter</p>
-        <WrapperCheckbox>
-            <input type="checkbox"
-                   onClick={() => setItems(JSON.parse(localStorage.getItem("storage")) || [])}
-            /><span>All</span>
-            <input type="checkbox"/><span>With couple</span>
-            <input type="checkbox"/><span>Single</span>
-        </WrapperCheckbox>
-      <TodoList />
+      <p>Filter</p>
+      <WrapperCheckbox>
+        <input
+          type="checkbox"
+          onClick={() =>
+            setItems(JSON.parse(localStorage.getItem("storage")) || [])
+          }
+        />
+        <span>All</span>
+        <input type="checkbox" />
+        <span>With couple</span>
+        <input type="checkbox" />
+        <span>Single</span>
+      </WrapperCheckbox>
+      <TodoList
+        onChange={() =>
+          setItems(JSON.parse(localStorage.getItem("storage")) || [])
+        }
+      />
     </>
   );
 }
