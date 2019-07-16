@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const GuestList = styled.ul`
@@ -18,33 +18,21 @@ const Item = styled.input`
   border: none;
 `;
 
-const TodoList = () => {
-  const [guests, setGuests] = useState(
-    JSON.parse(localStorage.getItem("storage"))
-  );
-  useEffect(
-    () => setGuests(JSON.parse(localStorage.getItem("storage")) || []),
-    []
-  );
+const TodoList = (props) => {
   return (
     <GuestList>
-      {guests.map((item, id) => (
+      {props.items.map((item) => (
         <Guest>
           <Item
             value={item.name}
             disabled={true}
             onDoubleClick={() => {
-              console.log(id);
             }}
           />
           <span>{item.couple === true ? "With couple" : "Single"}</span>
           <button
             onClick={() => {
-              localStorage.setItem(
-                "storage",
-                JSON.stringify(guests.filter(x => x.id !== item.id))
-              );
-              setGuests(JSON.parse(localStorage.getItem("storage")));
+              props.items.filter(x => x.id !== item.id)
             }}
           >
             Delete
