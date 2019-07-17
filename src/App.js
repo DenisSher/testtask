@@ -24,7 +24,7 @@ function GuestApp(props) {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && text !== "") {
-      addGuest({ id: uuidv4(), name: text, couple })
+      props.addGuest({ id: uuidv4(), name: text, couple })
       setText("")
     }
   }
@@ -33,7 +33,7 @@ function GuestApp(props) {
     <>
       <span>
         Amount of guests:
-        {props.state.reduce((acc, current) => {
+        {props.guests.reduce((acc, current) => {
           return current.couple === true ? acc + 2 : acc + 1
         }, 0)}
       </span>
@@ -57,20 +57,20 @@ function GuestApp(props) {
         <span>Single</span>
       </WrapperCheckbox>
 
-      <TodoList items={props.state}/>
+      <TodoList items={props.guests}/>
     </>
   )
 }
 
 function mapStateToProps(state) {
   return {
-    addGuest: state
+    guests: state
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    guests: payload => dispatch(addGuest(payload))
+    addGuest: payload => dispatch({type: "ADD_USER", payload})
   }
 }
 

@@ -1,5 +1,8 @@
 import React from "react";
+import { setGuest } from "../action"
 import styled from "styled-components";
+import { connect } from "react-redux"
+import uuidv4 from "uuid/v4"
 
 const GuestList = styled.ul`
   list-style: none;
@@ -21,7 +24,7 @@ const Item = styled.input`
 const TodoList = (props) => {
   return (
     <GuestList>
-      {props.items.map((item) => (
+      {props.guests.map((item) => (
         <Guest>
           <Item
             value={item.name}
@@ -31,9 +34,7 @@ const TodoList = (props) => {
           />
           <span>{item.couple === true ? "With couple" : "Single"}</span>
           <button
-            onClick={() => {
-              props.items.filter(x => x.id !== item.id)
-            }}
+            onClick = {() => props.setGuest(props.guests.filter(x => x.id !== item.id))}
           >
             Delete
           </button>
@@ -43,4 +44,19 @@ const TodoList = (props) => {
   );
 };
 
-export default TodoList;
+function mapStateToProps(state) {
+  return {
+    guests: state
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setGuest: payload => dispatch({type: "SET_USER", payload})
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TodoList);

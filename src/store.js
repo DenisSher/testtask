@@ -1,12 +1,9 @@
 import { createStore } from "redux"
 import OperationGuest from "./reducers/rootReducer"
 const store = createStore(OperationGuest)
-store.subscribe(() => console.log(store.getState()))
+//store.subscribe(() => console.log(store.getState()))
 
-//store.dispatch({ type: "INCREMENT" })
-//store.dispatch({ type: "DECREMENT" })
-
-store.dispatch({ type: "ADDGUEST" })
-store.dispatch({ type: "SETGUEST" })
+store.dispatch({ type: "ADD_GUEST" })
+store.dispatch({ type: "SET_GUEST" })
 
 export default store
